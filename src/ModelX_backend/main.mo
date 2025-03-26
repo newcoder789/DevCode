@@ -3,7 +3,6 @@ import Text "mo:base/Text";
 import Nat "mo:base/Nat";
 import Array "mo:base/Array";
 import Debug "mo:base/Debug";
-import Nat64 "mo:base/Nat64";
 import HashMap "mo:base/HashMap";
 import Hash "mo:base/Hash"; 
 import Nat32 "mo:base/Nat32";
@@ -183,7 +182,7 @@ public shared(msg) func addModel(
         });
 
         if (hasKey != null) {
-          Debug.print("User has paid access for model " # Nat.toText(modelId));
+          // Debug.print("User has paid access for model " # Nat.toText(modelId));
           return #Success(key);
         };
 

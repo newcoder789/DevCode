@@ -1,49 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthClient } from "@dfinity/auth-client";
 import { Menu, X } from 'lucide-react';
+import { ConnectWallet } from "@nfid/identitykit/react";
+import { useAuth } from "../src/StateManagement/useContext/useClient";
+
+const ConnectBtn = ({ onClick }) => (
+
+  <button
+    onClick={onClick}
+    className=" bg-white"
+  >
+    <div className=" w-full h-full  rounded-xl flex items-center justify-center  ">
+      Connect Wallet
+    </div>
+  </button>
+);
+
 
 const Navbar = ({ identity, setIdentity, setActor }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated,  principal,actor } = useAuth();
 
-  const handleLogin = async () => {
-    const authClient = await AuthClient.create();
-    await authClient.login({
-      identityProvider: process.env.DFX_NETWORK === "ic" ? "https://identity.ic0.app" : "http://br5f7-7uaaa-aaaaa-qaaca-cai.localhost:4943/",
-      onSuccess: async () => {
-        try {
-          const identity = authClient.getIdentity();
-          setIdentity(identity);
 
-          const { Actor, HttpAgent } = await import("@dfinity/agent");
-          const { idlFactory } = await import("../../declarations/ModelX_backend");
 
-          const agent = new HttpAgent({ identity });
-          if (process.env.DFX_NETWORK !== "ic") {
-            await agent.fetchRootKey();
-          }
-          const actorInstance = Actor.createActor(idlFactory, {
-            agent,
-            canisterId: process.env.CANISTER_ID || "br5f7-7uaaa-aaaaa-qaaca-cai",
-          });
-          setActor(actorInstance);
-          navigate("/");
-        } catch (error) {
-          console.log("Error while creating agents:", error);
-        }
-      },
-      onError: (err) => console.log("Auth client error:", err),
-    });
-  };
+  // const handleLogin = async () => {
+  //   const authClient = await AuthClient.create();
+  //   await authClient.login({
+  //     identityProvider: process.env.DFX_NETWORK === "ic" ? "https://identity.ic0.app" : "http://br5f7-7uaaa-aaaaa-qaaca-cai.localhost:4943/",
+  //     onSuccess: async () => {
+  //       try {
+  //         const identity = authClient.getIdentity();
+  //         setIdentity(identity);
 
-  const handleLogout = async () => {
-    const authClient = await AuthClient.create();
-    await authClient.logout();
-    setIdentity(null);
-    setActor(null);
-    navigate("/");
-  };
+  //         const { Actor, HttpAgent } = await import("@dfinity/agent");
+  //         const { idlFactory } = await import("../../declarations/ModelX_backend");
+
+  //         const agent = new HttpAgent({ identity });
+  //         if (process.env.DFX_NETWORK !== "ic") {
+  //           await agent.fetchRootKey();
+  //         }
+  //         const actorInstance = Actor.createActor(idlFactory, {
+  //           agent,
+  //           canisterId: process.env.CANISTER_ID || "br5f7-7uaaa-aaaaa-qaaca-cai",
+  //         });
+  //         setActor(actorInstance);
+  //         navigate("/");
+  //       } catch (error) {
+  //         console.log("Error while creating agents:", error);
+  //       }
+  //     },
+  //     onError: (err) => console.log("Auth client error:", err),
+  //   });
+  // };
+
+
+
+  // const handleLogout = async () => {
+  //   const authClient = await AuthClient.create();
+  //   await authClient.logout();
+  //   setIdentity(null);
+  //   setActor(null);
+  //   navigate("/");
+  // };
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -79,13 +99,19 @@ const Navbar = ({ identity, setIdentity, setActor }) => {
           <Link to="/createmodel" className="text-gray-600 hover:text-gray-900 text-sm">
             Create Model
           </Link>
-          <Link to="/docs" className="text-gray-600 hover:text-gray-900 text-sm">
+          <Link to="/governence" className="text-gray-600 hover:text-gray-900 text-sm">
             Governance
+          </Link>
+          <Link to="/create-bounty" className="text-gray-600 hover:text-gray-900 text-sm">
+            Create Bounty
+          </Link>
+          <Link to="/CommunityActivity" className="text-gray-600 hover:text-gray-900 text-sm">
+          CommunityActivity
           </Link>
           {/* <Link to="/pricing" className="text-gray-600 hover:text-gray-900 text-sm">
             Pricing
           </Link> */}
-          {identity ? (
+          {/* {identity ? (
            <button
            onClick={handleLogout}
            className="text-white bg-red-500 border border-red-600 px-4 py-2 rounded-md text-sm font-semibold 
@@ -102,7 +128,39 @@ const Navbar = ({ identity, setIdentity, setActor }) => {
                 Log In
               </button>
             </>
-          )}
+          )} */}
+          {!isAuthenticated && (
+          <div className="hidden font-posterama md:block">
+            <ConnectWallet
+              connectButtonComponent={ConnectBtn}
+              className="rounded-full bg-black"
+            />
+          </div>
+        )}
+
+        {/* User Info */}
+        {isAuthenticated && (
+          <div className=" hidden md:inline-block relative  rounded-2xl bg-gradient-to-r  from-[#f09787] to-[#CACCF5] text-left p-[1.5px]">
+            <Link
+            to= "/profile/1">
+            <button
+              // onClick={toggleDropdown}
+              className="flex items-center text-white rounded-full"
+            >
+              <div className="bg-black h-full w-full rounded-2xl flex items-center p-1 px-3">
+
+                <div className="flex flex-col items-start w-24 h-8 lg:w-40 lg:h-full ">
+                  <span className=" text-[10px] lg:text-xs text-gray-400 w-full overflow-hidden whitespace-nowrap text-ellipsis">
+                    {principal?.toString() || "N/A"}
+                  </span>
+                </div>
+
+              </div>
+            </button>
+            </Link>
+          </div>
+
+        )}
         </nav>
 
         {/* Mobile Menu Button */}

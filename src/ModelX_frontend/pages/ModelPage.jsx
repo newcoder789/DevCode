@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from 'framer-motion';
 import { Download, Filter, Search, Star } from "lucide-react";
-import { AuthClient } from "@dfinity/auth-client";
-import  { Actor, HttpAgent } from "@dfinity/agent";
-import { idlFactory } from "../../declarations/ModelX_backend";
+import { useAuth } from "../../ModelX_frontend/src/StateManagement/useContext/useClient";
 
-
-const ModelPage = ({ identity, actor }) => {
+const ModelPage = () => {
     const { id } = useParams();
     const [model, setModel] = useState(null);
     const [remainingTrials, setRemainingTrials] = useState(0);
@@ -19,11 +15,13 @@ const ModelPage = ({ identity, actor }) => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [filterLanguage, setFilterLanguage] = useState("");
-
-
+    
+    const { isAuthenticated,  principal,actor } = useAuth();
     const fetchModels = async() =>
           {
-              const modelList = await actor.getModelsWithFilters({language: filterLanguage, tags:[inputText]});
+              // const modelList = await actor.getModelsWithFilters({language: filterLanguage, tags:[inputText]});
+              const modelList = await actor.getModels();
+              console.log(modelList);
               setModel(modelList)
               if (!modelList || modelList.length === 0) {
                   console.warn("No models found.");
@@ -66,29 +64,29 @@ const ModelPage = ({ identity, actor }) => {
 
 
     
-    const handleTryForFree = async (modelId) => {
-      if (!actor) {
-          setError("Please log in to try the model.");
-          return;
-        }
-        try {
-          const result = await actor.tryModel(modelId);
-          if ("Success" in result) {
-              const key = result.Success;
-              const runResult = await actor.runOffchainModel(modelId, "test input", key);
-              console.log("Run result:", runResult);
-              const remaining = await actor.getRemainingTrials(modelId);
-              setRemainingTrials({ ...remainingTrials, [modelId]: Number(remaining) });
-          } else if ("NoTrials" in result) {
-              setError("No more free trials available for this model.");
-          } else {
-              setError("Access denied.");
-          }
-        } catch (err) {
-          setError("An error occurred while trying the model.");
-          console.error("Try for free error:", err);
-        }
-      };
+    // const handleTryForFree = async (modelId) => {
+    //   if (!actor) {
+    //       setError("Please log in to try the model.");
+    //       return;
+    //     }
+    //     try {
+    //       const result = await actor.tryModel(modelId);
+    //       if ("Success" in result) {
+    //           const key = result.Success;
+    //           const runResult = await actor.runOffchainModel(modelId, "test input", key);
+    //           console.log("Run result:", runResult);
+    //           const remaining = await actor.getRemainingTrials(modelId);
+    //           setRemainingTrials({ ...remainingTrials, [modelId]: Number(remaining) });
+    //       } else if ("NoTrials" in result) {
+    //           setError("No more free trials available for this model.");
+    //       } else {
+    //           setError("Access denied.");
+    //       }
+    //     } catch (err) {
+    //       setError("An error occurred while trying the model.");
+    //       console.error("Try for free error:", err);
+    //     }
+    //   };
       
       return (
         <div className="py-8">

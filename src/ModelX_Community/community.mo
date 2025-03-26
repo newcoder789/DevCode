@@ -15,9 +15,11 @@
 
 
   actor Community {
-
+    func customHash(n: Nat): Nat32 {
+      return Nat32.fromNat(n % 4294967296); // Simple modulus-based hashing
+    };
     let keyEqual = Nat.equal;
-    let keyHash = Hash.hash;
+    let keyHash = customHash;
 
     // POST AND PROFILE 
     type Post = {
@@ -157,7 +159,7 @@
       stable var nextCommunityId: Nat = 0;
       let communities = HashMap.HashMap<Nat, Community>(0, Nat.equal, natHash);
       stable var nextProposalId: Nat = 0;
-      let campaigns = HashMap.HashMap<Nat, Campaign>(0, Nat.equal, Nat.hash);
+      let campaigns = HashMap.HashMap<Nat, Campaign>(0, Nat.equal, natHash);
       
     // Structure of a proposal
     public type Proposal = {
@@ -190,7 +192,7 @@
               creator = msg.caller;
               members = [(msg.caller, #Leader)]; 
               membershipFee = membershipFee;
-              proposal= []
+              proposals= []
           };
           
           communities.put(id, community);
@@ -239,13 +241,14 @@
 
     // Helper function to check if a user is a leader of a community
     func isLeader(community: Community, user: Principal): Bool {
-      for ((memberPrincipal, role) in community.members) {
-        if (memberPrincipal == user and role == #Leader) {
-          return true;
-        }
+        for ((memberPrincipal, role) in Iter.fromArray(community.members)) { 
+          if (memberPrincipal == user and role == #Leader) {
+            return true;
+          }
+        };
+        return false; // Return false only after checking all members
       };
-      return false;
-    };
+
 
     // Function to create a proposal (only accessible by community leaders)
     public shared(msg) func createProposal(communityId: Nat, title: Text, description: Text): async Result.Result<Bool, Text> {
@@ -286,7 +289,7 @@
           var proposalOpt: ?Proposal = null;
           var updatedProposals: [(Nat, Proposal)] = [];
 
-          for ((id, proposal) in community.proposals) {
+          for ((id, proposal) in Iter.fromArray(community.proposals)) {
             if (id == proposalId) {
               proposalOpt := ?proposal;
             } else {
@@ -297,7 +300,7 @@
           switch (proposalOpt) {
             case (?proposal) {
               // Check if the caller has already voted
-              for ((voter, _) in proposal.votes) {
+              for ((voter, _) in Iter.fromArray(proposal.votes)) {
                 if (voter == msg.caller) {
                   return #err("You have already voted on this proposal.");
                 }
@@ -331,7 +334,7 @@
             var proposalOpt: ?Proposal = null;
             var updatedProposals: [(Nat, Proposal)] = [];
 
-            for ((id, proposal) in community.proposals) {
+            for ((id, proposal) in Iter.fromArray(community.proposals)) {
               if (id == proposalId) {
                 proposalOpt := ?proposal;
               } else {
@@ -347,7 +350,15 @@
 
                 // Simple majority approval check
                 let totalVotes = proposal.votes.size();
-                let approveVotes = Array.foldLeft(proposal.votes, 0, func((_, vote), acc) { if (vote) acc + 1 else acc });
+                let approveVotes = Array.foldLeft< (Principal, Bool), Nat >(
+                  proposal.votes,
+                  0,
+                  func(acc: Nat, tuple: (Principal, Bool)): Nat {
+                    let (_, vote) = tuple;
+                    if (vote) { acc + 1 } else { acc }
+                  }
+                );
+
 
                 if (approveVotes > totalVotes / 2) {
                   // Mark the proposal as executed

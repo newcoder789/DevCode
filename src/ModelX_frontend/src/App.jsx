@@ -8,17 +8,16 @@ import Dashboard from "../pages/Dashboard";
 import Community from "../pages/Community";
 import Profile from "../pages/Profile";
 import Footer from "../components/Footer";
-import { AuthClient } from "@dfinity/auth-client";
-import  { Actor, HttpAgent } from "@dfinity/agent";
-import  { ModelX_backend }  from "../../declarations/ModelX_backend/index.js";
-import { idlFactory } from "../../declarations/ModelX_backend";
-import AIModelRepository from "../pages/Repository";
+import { useAuth } from "../src/StateManagement/useContext/useClient";
 import Model from "../pages/model";
 import Repo from "../pages/Repository";
+import BountyCreation from "../pages/BountyCreation";
+import GovernancePage from "../pages/Governence";
+import FundingPage from "../pages/Funding";
+import CommunityActivity from "../pages/CommunityActivity";
 
 const App = () => {
     const [identity, setIdentity] = useState(null);
-    const [actor, setActor] = useState(null);
 
 
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -26,41 +25,29 @@ const App = () => {
     const toggleTheme = () => {
       setIsDarkMode(!isDarkMode);
     };
-    useEffect(() => {
-          (async () => {
-                const authClient = await AuthClient.create();
-                const identity = authClient.getIdentity();
-                setIdentity(identity);
-                if (identity) {
-                    const agent = await HttpAgent.create({ identity }); 
-                    if (process.env.DFX_NETWORK !== "ic") {
-                        await agent.fetchRootKey();
-                    }
-                    const actorInstance = Actor.createActor(idlFactory, {
-                    agent,
-                    canisterId: process.env.VITE_CANISTER_ID || "bd3sg-teaaa-aaaaa-qaaba-cai",
-                    });
-
-                    setActor(actorInstance);
-                  }
-                })();
-      }, []);
+    
+    const { isAuthenticated,  principal,actor } = useAuth();
+    
     
     return (
           <Router>
-                <Navbar identity={identity} setIdentity={setIdentity} setActor={setActor} />
+                <Navbar />
                 {/* <div className="min-h-screen bg-white flex flex-col"> */}
                     {/* <div style={{ padding: "20px" }}> */}
             <Routes>
-                            <Route path="/" element={<Home identity={identity} actor={actor} />} />
+                            <Route path="/" element={<Home  />} />
                             {/* <Route path="/model/:id" el > */}
-                            <Route path="/datasets" element={<DatasetPage identity={identity} actor={actor} />} />
-                            <Route path="/dashboard" element={<Dashboard identity={identity} actor={actor} />} />
-                            <Route path="/modelpage" element={<ModelPage identity={identity} actor={actor} />} />
-                            <Route path="/community" element={<Community identity={identity} actor={actor} />} />
-                            <Route path="/profile/:username" element={<Profile identity={identity} actor={actor} />} />
-                            <Route path="/model/:id" element={<Model identity={identity} actor={actor} />} />
-                            <Route path="/repo" element={<Repo identity={identity} actor={actor} />} />
+                            <Route path="/datasets" element={<DatasetPage  />} />
+                            <Route path="/dashboard" element={<Dashboard  />} />
+                            <Route path="/modelpage" element={<ModelPage />} />
+                            <Route path="/community" element={<Community  />} />
+                            <Route path="/profile/:username" element={<Profile  />} />
+                            <Route path="/model/:id" element={<Model  />} />
+                            <Route path="/repo" element={<Repo  />} />
+                            <Route path="/create-bounty" element={<BountyCreation  />} />
+                            <Route path="/governence" element={<GovernancePage  />} />
+
+                            <Route path="/CommunityActivity" element={< CommunityActivity />} />
                             
                 {/* </div>
               </div> */}

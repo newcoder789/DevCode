@@ -214,14 +214,14 @@ const Home = () => {
   return (
     <main className="bg-white">
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+      <section className="max-w-7xl  max-h-screen mx-auto px-4 sm:px-6 lg:px-8 pt-10 ">
         <div
           className="relative bg-slate-950 rounded-3xl h-[589px] flex items-center justify-start bg-cover bg-center"
-          style={{ backgroundImage: "url('/Frame1.png')" }}
+          style={{ backgroundImage: "url('/Frame1.png')" , backgroundPositionX: "500px"}}
         >
           {/* Left Side: Text and Button */}
           <div className="pl-[91px]">
-            <h1 className="text-white text-7xl font-bold font-['Poppins'] leading-[79.5px] max-w-[645px]">
+            <h1 className="text-white text-5xl font-bold font-['Poppins'] leading-[79.5px] max-w-[645px]">
               A Decentralized AI Marketplace. Empowering Developers & Buyers
             </h1>
             <p className="text-neutral-300 text-2xl font-normal font-['Poppins'] leading-9 max-w-96 mt-[90px]">
@@ -248,128 +248,139 @@ const Home = () => {
       </section>
       {/* Models, Community, Datasets Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <div className="grid grid-cols-3 gap-6">
-          {/* Models Column */}
-          <div>
-            <div className="flex items-center mb-4">
-              <div className="w-5 h-5 mr-2 overflow-hidden">
-                <div className="w-3.5 h-2 absolute opacity-25 bg-black" />
-                <div className="w-2 h-3.5 absolute opacity-50 bg-black" />
-                <div className="w-2 h-3.5 absolute bg-black" />
-              </div>
-              <h3 className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">Models</h3>
-            </div>
-            {[
-              { name: "deepseek-ai/DeepSeek-V3-0324", developer: "John Doe" },
-              { name: "manycore-research/", developer: "Manycore Research" },
-              { name: "ds4sd/SmolDocling-256M-preview", developer: "DS4SD" },
-              { name: "mistralai/Mistral-Small", developer: "Mistral AI" },
-              { name: "sesame/csm-1b", developer: "John Doe" },
-            ].map((model, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg border border-black shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-4 mb-4 relative"
-              >
-                <p className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">{model.name}</p>
-                <div className="flex items-center mt-2 text-sm font-normal font-['Inter'] text-black">
-                  <span>Developer: {model.developer}</span>
-                </div>
-                <Link
-                  to="/buy-now"
-                  className="absolute right-4 top-4 bg-blue-400 text-white text-sm font-normal font-['Inter'] leading-none px-4 py-1 rounded-[50px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-black"
-                >
-                  Buy Now
-                </Link>
-              </div>
-            ))}
-            <Link
-              to="/models"
-              className="block text-center text-base font-normal font-['Inter'] leading-normal mt-4"
-            >
-              Browse 1M+ models
-            </Link>
+  <div className="grid grid-cols-3 gap-6">
+    {/* Models Column */}
+    <div>
+      <div className="flex items-center mb-4">
+        <div className="w-5 h-5 mr-2 overflow-hidden">
+          <div className="w-3.5 h-2 absolute opacity-25 bg-black" />
+          <div className="w-2 h-3.5 absolute opacity-50 bg-black" />
+          <div className="w-2 h-3.5 absolute bg-black" />
+        </div>
+        <h3 className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">Models</h3>
+      </div>
+      {[
+        { name: "deepseek-ai/DeepSeek-V3-0324", developer: "John Doe" },
+        { name: "manycore-research/", developer: "Manycore Research" },
+        { name: "ds4sd/SmolDocling-256M-preview", developer: "DS4SD" },
+        { name: "mistralai/Mistral-Small", developer: "Mistral AI" },
+        { name: "sesame/csm-1b", developer: "John Doe" },
+      ].map((model, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-lg border border-black shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-4 mb-4 relative min-h-[100px]"
+        >
+          <p className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">{model.name}</p>
+          <div className="flex items-center mt-2 text-sm font-normal font-['Inter'] text-black">
+            <span>Developer: {model.developer}</span>
           </div>
+          <Link
+            to="/buy-now"
+            className="absolute right-4 top-4 bg-blue-400 text-white text-sm font-normal font-['Inter'] leading-none px-4 py-1 rounded-[50px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-black"
+          >
+            Buy Now
+          </Link>
+        </div>
+      ))}
+      <Link
+        to="/models"
+        className="block text-center text-base font-normal font-['Inter'] leading-normal mt-4"
+      >
+        Browse 1M+ models
+      </Link>
+    </div>
 
-          {/* Community Column */}
-          <div>
-            <div className="flex items-center mb-4">
-              <h3 className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">Community</h3>
-            </div>
-            {[
-              "AI Nexus Hub",
-              "Neural Forge",
-              "The Model Lab",
-              "SynthAI Community",
-              "AI Dev Syndicate",
-            ].map((community, index) => (
-              <div key={index} className="p-4 mb-4 relative">
-                <p className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">{community}</p>
-                <Link
-                  to="/join"
-                  className="absolute right-4 top-4 text-xs font-normal font-['Inter'] text-slate-950"
-                >
-                  Join
-                </Link>
-              </div>
-            ))}
-            <Link
-              to="/communities"
-              className="block text-center text-base font-normal font-['Inter'] leading-normal mt-4"
-            >
-              Browse 50k+ communities
-            </Link>
+    {/* Community Column */}
+    <div>
+      <div className="flex items-center mb-4">
+        <div className="w-5 h-5 mr-2 overflow-hidden">
+          <div className="w-3.5 h-2 absolute opacity-25 bg-black" />
+          <div className="w-2 h-3.5 absolute opacity-50 bg-black" />
+          <div className="w-2 h-3.5 absolute bg-black" />
+        </div>
+        <h3 className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">Community</h3>
+      </div>
+      {[
+        "AI Nexus Hub",
+        "Neural Forge",
+        "The Model Lab",
+        "SynthAI Community",
+        "AI Dev Syndicate",
+      ].map((community, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-lg border border-black shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-4 mb-4 relative min-h-[100px]"
+        >
+          <p className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">{community}</p>
+          <div className="flex items-center mt-2 text-sm font-normal font-['Inter'] text-black">
+            <span>Members: 10k+</span> {/* Placeholder to match other columns */}
           </div>
+          <Link
+            to="/join"
+            className="absolute right-4 top-4 bg-blue-400 text-white text-sm font-normal font-['Inter'] leading-none px-4 py-1 rounded-[50px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-black"
+          >
+            Join
+          </Link>
+        </div>
+      ))}
+      <Link
+        to="/communities"
+        className="block text-center text-base font-normal font-['Inter'] leading-normal mt-4"
+      >
+        Browse 50k+ communities
+      </Link>
+    </div>
 
-          {/* Datasets Column */}
-          <div>
-            <div className="flex items-center mb-4">
-              <div className="w-5 h-5 mr-2 overflow-hidden">
-                <div className="w-3 h-1 bg-black bg-opacity-25" />
-                <div className="w-3 h-2 opacity-50 bg-black" />
-                <div className="w-3 h-2 opacity-50 bg-black" />
-                <div className="w-3 h-[2.64px] bg-black" />
-              </div>
-              <h3 className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">Datasets</h3>
+    {/* Datasets Column */}
+    <div>
+      <div className="flex items-center mb-4">
+        <div className="w-5 h-5 mr-2 overflow-hidden">
+          <div className="w-3 h-1 bg-black bg-opacity-25" />
+          <div className="w-3 h-2 opacity-50 bg-black" />
+          <div className="w-3 h-2 opacity-50 bg-black" />
+          <div className="w-3 h-[2.64px] bg-black" />
+        </div>
+        <h3 className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">Datasets</h3>
+      </div>
+      {[
+        { name: "nvidia/Llama-Nemotron-Post", status: "Paid", color: "bg-blue-400" },
+        { name: "glaiveai/reasoning-v1-20m", status: "Paid", color: "bg-blue-400" },
+        { name: "nvidia/PhysicalAI-Rob-Embodi", status: "Free", color: "bg-emerald-400" },
+        { name: "FreedomIntelligence/medical", status: "Free", color: "bg-emerald-400" },
+        { name: "facebook/collaborative_agent_", status: "Free", color: "bg-emerald-400" },
+      ].map((dataset, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-lg border border-black shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-4 mb-4 relative min-h-[100px]"
+        >
+          <p className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">{dataset.name}</p>
+          <div className="flex items-center mt-2 text-sm font-normal font-['Inter'] text-black">
+            <span>Updated</span>
+            <span className="mx-2">•</span>
+            <div className="w-4 h-4 overflow-hidden">
+              <div className="w-3 h-3.5 bg-black" />
             </div>
-            {[
-              { name: "nvidia/Llama-Nemotron-Post", status: "Paid", color: "bg-blue-400" },
-              { name: "glaiveai/reasoning-v1-20m", status: "Paid", color: "bg-blue-400" },
-              { name: "nvidia/PhysicalAI-Rob-Embodi", status: "Free", color: "bg-emerald-400" },
-              { name: "FreedomIntelligence/medical", status: "Free", color: "bg-emerald-400" },
-              { name: "facebook/collaborative_agent_", status: "Free", color: "bg-emerald-400" },
-            ].map((dataset, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg border border-black shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-4 mb-4 relative"
-              >
-                <p className="text-base font-normal font-['IBM_Plex_Mono'] leading-snug">{dataset.name}</p>
-                <div className="flex items-center mt-2 text-sm font-normal font-['Inter'] text-black">
-                  <span>Updated</span>
-                  <span className="mx-2">•</span>
-                  <div className="w-4 h-4 overflow-hidden">
-                    <div className="w-3 h-3.5 bg-black" />
-                  </div>
-                  <span className="mx-2">•</span>
-                  <div className="w-4 h-4 overflow-hidden">
-                    <div className="w-3.5 h-3.5 bg-black" />
-                  </div>
-                </div>
-                <div
-                  className={`absolute right-4 top-4 ${dataset.color} text-white text-sm font-normal font-['Inter'] leading-none px-4 py-1 rounded-[50px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-black`}
-                >
-                  {dataset.status}
-                </div>
-              </div>
-            ))}
-            <Link
-              to="/datasets"
-              className="block text-center text-base font-normal font-['Inter'] leading-normal mt-4"
-            >
-              Browse 250k+ datasets
-            </Link>
+            <span className="mx-2">•</span>
+            <div className="w-4 h-4 overflow-hidden">
+              <div className="w-3.5 h-3.5 bg-black" />
+            </div>
+          </div>
+          <div
+            className={`absolute right-4 top-4 ${dataset.color} text-white text-sm font-normal font-['Inter'] leading-none px-4 py-1 rounded-[50px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] border border-black`}
+          >
+            {dataset.status}
           </div>
         </div>
-      </section>
+      ))}
+      <Link
+        to="/datasets"
+        className="block text-center text-base font-normal font-['Inter'] leading-normal mt-4"
+      >
+        Browse 250k+ datasets
+      </Link>
+    </div>
+  </div>
+</section>
 
       {/* The Home of Machine Learning Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
@@ -388,8 +399,8 @@ const Home = () => {
               Host and collaborate on unlimited public models, datasets and applications.
             </p>
             <img
-              className="w-full h-72 mt-4 border-t border-black"
-              src="/collaboration"
+              className=" h-72 mt-4 border-t border-black overflow-hidden w-full"
+              src="/collaboration.png"
               alt="CollaborationPlatform"
             />
           </div>
@@ -401,8 +412,8 @@ const Home = () => {
               With the HF Open source stack.
             </p>
             <img
-              className="w-full h-72 mt-4 border-t border-black"
-              src="https://placehold.co/307x302"
+              className=" h-72 mt-4 border-t border-black w-full"
+              src="/movefaster.png"
               alt="Move Faster"
             />
           </div>
@@ -434,7 +445,7 @@ const Home = () => {
             </Link>
             <img
               className="w-full h-72 mt-4 border-t border-black"
-              src="https://placehold.co/649x302"
+              src="/spaces.png"
               alt="Portfolio"
             />
           </div>
@@ -442,11 +453,11 @@ const Home = () => {
       </section>
 
       {/* Community Server’s Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <h2 className="text-center text-3xl font-bold font-['Inter'] leading-9">Community Server’s</h2>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 h-screen">
+        <h2 className="text-center text-3xl font-bold font-['Inter'] leading-9 mb-6">Community Server’s</h2>
         <img
           className="w-full h-[500px] mt-4"
-          src="https://placehold.co/1101x500"
+          src="/server.png"
           alt="Community Servers"
         />
       </section>

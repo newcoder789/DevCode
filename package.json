@@ -24,6 +24,7 @@
     "@dfinity/agent": "^2.4.0",
     "@dfinity/auth-client": "^2.3.0",
     "@dfinity/principal": "^2.3.0",
+    "@nfid/identitykit": "^1.0.10",
     "framer-motion": "^12.6.0",
     "react-router-dom": "^7.4.0"
   }

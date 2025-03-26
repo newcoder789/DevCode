@@ -1,0 +1,41 @@
+{
+  "canisters": {
+    "ModelX_backend": {
+      "main": "src/ModelX_backend/main.mo",
+      "type": "motoko"
+    },
+    "ModelX_frontend": {
+      "source": [
+        "src/ModelX_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "ModelX_frontend",
+      "asset_restrictions": {
+        "img-src": ["self", "https://images.unsplash.com"]
+      }
+    },
+    "internet_identity": {
+      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+      "frontend": {},
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      },
+      "type": "custom",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
+    },
+    "ModelX_Community": {
+      "main": "src/ModelX_Community/community.mo",
+      "type": "motoko"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

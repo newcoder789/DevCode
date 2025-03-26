@@ -1,0 +1,11 @@
+{
+    "headers": [
+      {
+        "match": ".*",
+        "headers": {
+          "ignore":false
+        }
+      }
+    ] 
+  }
+  
